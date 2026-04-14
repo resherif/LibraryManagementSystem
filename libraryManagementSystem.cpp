@@ -27,7 +27,7 @@ int main()
     {
         showMenu();
         cin >> choice;
-        cin.ignore(); // لتفادي مشاكل getline
+        cin.ignore(); 
 
         switch (choice)
         {
@@ -81,7 +81,7 @@ int main()
             break;
 
         case 7:
-            lib->saveToFile(); // يفترض نقلها من كلاس Book إلى libraryManager
+            lib->saveToFile();
             break;
 
         case 0:

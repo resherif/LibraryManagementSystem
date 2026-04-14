@@ -111,14 +111,7 @@ public:
     {
         BookAuthor = Author;
     }
-    void SetBookTitle(string title)
-    {
-        BookTitle = title;
-    }
-    void SetBookTitle(string title)
-    {
-        BookTitle = title;
-    }
+    
     void SetAvailableCopies(int no)
     {
         availableCopies = no;
