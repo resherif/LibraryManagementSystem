@@ -42,8 +42,10 @@ public:
     void setStrategy(Strategy *newStrategy)
     {
         if (strategy)
+        {
             delete strategy;
-        strategy = newStrategy;
+            strategy = newStrategy;
+        }
     }
     string State() const
     {
@@ -58,7 +60,8 @@ public:
         delete strategy;
     }
 };
-class Book{
+class Book
+{
     string BookTitle;
     string BookType;
     string BookAuthor;
@@ -66,58 +69,75 @@ class Book{
     vector<string> readBooks;
     int availableCopies;
     StateContext stateContext;
-    public:
-    Book(string t,string Ty,string au, int avc){
-        BookTitle=t;
-        BookType=Ty;
-        BookAuthor=au;
-        availableCopies=avc;
-        UpdateState();
 
+public:
+    Book(string t, string Ty, string au, int avc)
+    {
+        BookTitle = t;
+        BookType = Ty;
+        BookAuthor = au;
+        availableCopies = avc;
+        UpdateState();
     }
-    void UpdateState(){
-        if(availableCopies==0){
+    void UpdateState()
+    {
+        if (availableCopies == 0)
+        {
             stateContext.setStrategy(new OutOfStock());
         }
-       else if(availableCopies<3){
+        else if (availableCopies < 3)
+        {
             stateContext.setStrategy(new UpcomingSoon());
-        }else{
+        }
+        else
+        {
             stateContext.setStrategy(new Available());
         }
     }
-    void SetState(Strategy*strategy){
+    void SetState(Strategy *strategy)
+    {
         stateContext.setStrategy(strategy);
     }
-    string GetState()const{return stateContext.State();}
-    void SetBookTitle(string title){
-        BookTitle=title;
+    string GetState() const { return stateContext.State(); }
+    void SetBookTitle(string title)
+    {
+        BookTitle = title;
     }
-     void SetBookType(string Type){
-        BookType=Type;
+    void SetBookType(string Type)
+    {
+        BookType = Type;
     }
-     void SetBookAuthor(string Author){
-        BookAuthor=Author;
+    void SetBookAuthor(string Author)
+    {
+        BookAuthor = Author;
     }
-     void SetBookTitle(string title){
-        BookTitle=title;
+    void SetBookTitle(string title)
+    {
+        BookTitle = title;
     }
-     void SetBookTitle(string title){
-        BookTitle=title;
+    void SetBookTitle(string title)
+    {
+        BookTitle = title;
     }
-    void SetAvailableCopies(int no){
-        availableCopies=no;
+    void SetAvailableCopies(int no)
+    {
+        availableCopies = no;
         UpdateState();
     }
-    string GetBookTitle(){return BookTitle;}
-    string GetBookType(){return BookType;}
-    string GetBookAuthor(){return BookAuthor;}
-    int GetAvailableCopies(){return availableCopies;}
-    void DecreaseBookCopies(){
-        if(availableCopies>0)
-        {availableCopies--;}
+    string GetBookTitle() { return BookTitle; }
+    string GetBookType() { return BookType; }
+    string GetBookAuthor() { return BookAuthor; }
+    int GetAvailableCopies() { return availableCopies; }
+    void DecreaseBookCopies()
+    {
+        if (availableCopies > 0)
+        {
+            availableCopies--;
+        }
         UpdateState();
     }
-    void increaseBookCopies(){
+    void increaseBookCopies()
+    {
         availableCopies++;
         UpdateState();
     }
@@ -277,53 +297,53 @@ public:
         }
     }
     void saveToFile()
-{
-    // حفظ الكتب
-    ofstream bookFile("books.txt");
-    if (bookFile.is_open())
     {
-        for (auto &pair : books)
+        
+        ofstream bookFile("books.txt");
+        if (bookFile.is_open())
         {
-            Book *book = pair.second;
-            bookFile << book->GetBookTitle() << ","
-                     << book->GetBookType() << ","
-                     << book->GetBookAuthor() << ","
-                     << book->GetAvailableCopies() << ","
-                     << book->GetState() << "\n";
-        }
-        bookFile.close();
-        cout << "Books saved to books.txt\n";
-    }
-    else
-    {
-        cout << "Error opening books.txt\n";
-    }
-
-    // حفظ المستخدمين والكتب المستعارة
-    ofstream userFile("users.txt");
-    if (userFile.is_open())
-    {
-        for (auto &pair : users)
-        {
-            User *user = pair.second;
-            userFile << user->GetUserName() << ":";
-            vector<Book *> borrowed = user->GetBorrowedBooks();
-            for (size_t i = 0; i < borrowed.size(); ++i)
+            for (auto &pair : books)
             {
-                userFile << borrowed[i]->GetBookTitle();
-                if (i != borrowed.size() - 1)
-                    userFile << "|";
+                Book *book = pair.second;
+                bookFile << book->GetBookTitle() << ","
+                         << book->GetBookType() << ","
+                         << book->GetBookAuthor() << ","
+                         << book->GetAvailableCopies() << ","
+                         << book->GetState() << "\n";
             }
-            userFile << "\n";
+            bookFile.close();
+            cout << "Books saved to books.txt\n";
         }
-        userFile.close();
-        cout << "Users saved to users.txt\n";
+        else
+        {
+            cout << "Error opening books.txt\n";
+        }
+
+        
+        ofstream userFile("users.txt");
+        if (userFile.is_open())
+        {
+            for (auto &pair : users)
+            {
+                User *user = pair.second;
+                userFile << user->GetUserName() << ":";
+                vector<Book *> borrowed = user->GetBorrowedBooks();
+                for (size_t i = 0; i < borrowed.size(); ++i)
+                {
+                    userFile << borrowed[i]->GetBookTitle();
+                    if (i != borrowed.size() - 1)
+                        userFile << "|";
+                }
+                userFile << "\n";
+            }
+            userFile.close();
+            cout << "Users saved to users.txt\n";
+        }
+        else
+        {
+            cout << "Error opening users.txt\n";
+        }
     }
-    else
-    {
-        cout << "Error opening users.txt\n";
-    }
-}
     bool HasUser(const string &userName)
     {
         return users.find(userName) != users.end();
@@ -340,6 +360,5 @@ public:
             cout << "User not found.\n";
         }
     }
-
 };
 libraryManager *libraryManager::instance = nullptr;
